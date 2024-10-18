@@ -6,7 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $gmail = $_POST['gmail'];
 
-    // Check if the username or email already exists
     $checkSql = "SELECT * FROM authorizeduser WHERE authorizedUsername = ? OR gmail = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param('ss', $username, $gmail);
@@ -16,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkResult->num_rows > 0) {
         echo "<script>alert('Username or email already exists. Please choose another.');</script>";
     } else {
-        // Insert new user into authorizeduser table
         $sql = "INSERT INTO authorizeduser (gmail, authorizedUsername, authorizedPassword) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sss', $gmail, $username, $password);
