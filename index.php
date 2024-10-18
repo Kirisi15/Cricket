@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navigation Bar with Matches</title>
+    <title>Navigation Bar with Matches and Rankings</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -63,19 +63,18 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
-        .match-group {
+        .match-group, .rankings-group {
             margin: 20px;
             padding: 20px;
             border: 1px solid #ccc;
         }
-        .match-group h2 {
+        .match-group h2, .rankings-group h2 {
             margin: 10px 0;
         }
-        #matches{
-
+        #matches {
             position: absolute;
-            top:30%;
-            left:30%;
+            top: 30%;
+            left: 30%;
         }
     </style>
 </head>
@@ -104,12 +103,14 @@
         include 'db.php';
         $today = date('Y-m-d');
 
+        // Fetch upcoming matches
         $upcomingMatchesSql = "SELECT * FROM matches WHERE date > ? ORDER BY date, time";
         $stmt = $conn->prepare($upcomingMatchesSql);
         $stmt->bind_param("s", $today);
         $stmt->execute();
         $upcomingResult = $stmt->get_result();
 
+        // Fetch finished matches
         $finishedMatchesSql = "SELECT * FROM matches WHERE date <= ? ORDER BY date DESC, time DESC";
         $stmtFinished = $conn->prepare($finishedMatchesSql);
         $stmtFinished->bind_param("s", $today);
@@ -138,9 +139,41 @@
         }
         echo '</div>';
 
+        // Close prepared statements and DB connection for matches
         $stmt->close();
         $stmtFinished->close();
-        $conn->close();
+
+        // Fetch top 5 teams by wins
+        $rankingsSql = "
+        SELECT 
+           team.teamName, 
+        COUNT(matches.winningTeam) AS wins
+        FROM 
+           team
+        LEFT JOIN 
+           matches ON team.teamName = matches.winningTeam
+        GROUP BY 
+           team.teamName
+        ORDER BY 
+           wins DESC
+        LIMIT 5
+        ";
+        $rankingsResult = mysqli_query($conn, $rankingsSql);
+
+        echo '<div class="rankings-group">';
+        echo '<h2>Top 5 Teams</h2>';
+        if (mysqli_num_rows($rankingsResult) > 0) {
+            $rank = 1;
+            while ($team = mysqli_fetch_assoc($rankingsResult)) {
+                echo '<p>' . $rank . '. ' . $team['teamName'] . ' - Wins: ' . $team['wins'] . '</p>';
+                $rank++;
+            }
+        } else {
+            echo '<p>No rankings available.</p>';
+        }
+        echo '</div>';
+
+        mysqli_close($conn);
         ?>
 
     </div>
