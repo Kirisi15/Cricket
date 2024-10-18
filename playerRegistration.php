@@ -30,7 +30,7 @@
 
         <input type="submit" name="submit" value="Register"> <br><br>
         
-        <a href="playerDetails.php"> Add players </a>
+     
     </form>
 </body>
 </html>
