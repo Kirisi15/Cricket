@@ -53,7 +53,12 @@ if ($team) {
     echo "</div>";
 } else {
     echo "<p>No team found for this user.</p>";
+    echo "<a href='create-team.php'>Create a Team</a> ";
+
 }
 
 $conn->close();
+
+session_unset();  
+session_destroy(); 
 ?>
