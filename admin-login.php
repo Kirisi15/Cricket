@@ -29,7 +29,7 @@
 
 
     <?php
-        include 'dbConnect.php';
+        include 'db.php';
         if (isset($_POST['login'])) {
             $username=$_POST['adminUsername'];
             $password=$_POST['adminPassword'];

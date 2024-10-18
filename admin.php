@@ -7,7 +7,7 @@
 </head>
 <body>
     <?PHP
-        include 'dbConnect.php';
+        include 'db.php';
         
         $sql="SELECT * FROM matches";
         $result=mysqli_query($conn,$sql);
