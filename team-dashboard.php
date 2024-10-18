@@ -55,4 +55,5 @@ if ($team) {
 }
 
 $conn->close();
+session_destroy();
 ?>
