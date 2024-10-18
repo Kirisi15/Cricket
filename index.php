@@ -84,7 +84,7 @@
         <ul class="navbar">
             <li><a href="#matches">Matches</a></li>
             <li><a href="#news">News</a></li>
-            <li><a href="#rankings">Rankings</a></li>
+            <li><a href="rankings.php">Rankings</a></li>
             <li class="dropdown">
                 <a href="#login">Login</a>
                 <ul class="dropdown-content">
