@@ -6,13 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <?PHP
+    <?php
         include 'db.php';
         
-        $sql="SELECT * FROM matches";
-        $result=mysqli_query($conn,$sql);
-        if(mysqli_num_rows($result)>0)
-        {
+        $sql = "SELECT * FROM matches";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
             echo "<table>
                     <th>matchId</th>
                     <th>organizerId</th>
@@ -24,8 +23,7 @@
                     <th>scoreTeamA</th>
                     <th>scoreTeamB</th>
                     <th>winningTeam</th>";
-                while($row=mysqli_fetch_assoc($result))
-                {
+                while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
                     echo "<td>".$row['matchId']."</td>
                         <td>".$row['organizerId']."</td>
@@ -37,19 +35,16 @@
                         <td>".$row['scoreTeamA']."</td>
                         <td>".$row['scoreTeamB']."</td>
                         <td>".$row['winningTeam']."</td>
-                        <td><form type='POST'><button type='button' name='edit'>EDIT</button></form>";
-
+                        <td>
+                            <form method='GET' action='update-results.php'>
+                                <input type='hidden' name='matchId' value='".$row['matchId']."'>
+                                <button type='submit' name='edit'>EDIT</button>
+                            </form>
+                        </td>";
                     echo "</tr>";
                 }
             echo "</table>";
         }
-
-        if(isset($_POST['edit']))
-        {
-            header('location:matchEdit.php');
-        }
-            
-
     ?>
 </body>
 </html>
