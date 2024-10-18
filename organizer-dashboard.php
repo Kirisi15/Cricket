@@ -7,10 +7,8 @@ if (!isset($_SESSION['organizerId'])) {
     exit;
 }
 
-// Get the logged-in organizer's ID from the session
 $organizerId = $_SESSION['organizerId'];
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['scheduleMatch'])) {
     $teamIdA = $_POST['teamIdA'];
     $teamIdB = $_POST['teamIdB'];
@@ -18,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['scheduleMatch'])) {
     $time = $_POST['time'];
     $venue = $_POST['venue'];
 
-    // Insert match details along with the organizer's ID into the database
     $sql = "INSERT INTO matches (teamIdA, teamIdB, date, time, venue, organizerId) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssssi", $teamIdA, $teamIdB, $date, $time, $venue, $organizerId);
@@ -31,14 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['scheduleMatch'])) {
     $stmt->close();
 }
 
-// Handle logout
 if (isset($_POST['logout'])) {
     session_destroy();
     header('Location: organizer-login.php');
     exit;
 }
 
-// Fetch teams for dropdown options
 $sql_teams = "SELECT teamId, teamName FROM team";
 $result_teams = $conn->query($sql_teams);
 $teams = [];

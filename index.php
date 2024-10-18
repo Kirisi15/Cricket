@@ -103,14 +103,12 @@
         include 'db.php';
         $today = date('Y-m-d');
 
-        // Fetch upcoming matches
         $upcomingMatchesSql = "SELECT * FROM matches WHERE date > ? ORDER BY date, time";
         $stmt = $conn->prepare($upcomingMatchesSql);
         $stmt->bind_param("s", $today);
         $stmt->execute();
         $upcomingResult = $stmt->get_result();
 
-        // Fetch finished matches
         $finishedMatchesSql = "SELECT * FROM matches WHERE date <= ? ORDER BY date DESC, time DESC";
         $stmtFinished = $conn->prepare($finishedMatchesSql);
         $stmtFinished->bind_param("s", $today);
@@ -139,11 +137,9 @@
         }
         echo '</div>';
 
-        // Close prepared statements and DB connection for matches
         $stmt->close();
         $stmtFinished->close();
 
-        // Fetch top 5 teams by wins
         $rankingsSql = "
         SELECT 
            team.teamName, 
