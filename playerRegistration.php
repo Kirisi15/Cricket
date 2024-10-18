@@ -29,8 +29,7 @@
         <input type = "file" name ="role" required><br><br>
 
         <input type="submit" name="submit" value="Register"> <br><br>
-        
-        <a href="playerDetails.php"> Add players </a>
+    
     </form>
 </body>
 </html>
