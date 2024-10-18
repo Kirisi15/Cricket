@@ -1,11 +1,14 @@
 <?php
 session_start();
-include 'db.php'; // Include the database connection
+include 'db.php'; 
 
-// Simulate authorized user login (for demo purposes only, implement proper login logic)
-$loggedInUserId = $_SESSION['userId'] ?? 'U1'; // This would be dynamically set during login
+if (!isset($_SESSION['userId'])) {
+    header('Location: team-login.php');
+    exit;
+}
 
-// Fetch the teamId for the logged-in authorized user
+$loggedInUserId = $_SESSION['userId'];
+
 $sql = "SELECT teamId FROM authorizeduser WHERE userId = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $loggedInUserId);
@@ -14,7 +17,6 @@ $stmt->bind_result($teamId);
 $stmt->fetch();
 $stmt->close();
 
-// Fetch the team details
 $sql_team = "SELECT teamName, managerName, teamLogo, paymentStatus FROM team WHERE teamId = ?";
 $stmt_team = $conn->prepare($sql_team);
 $stmt_team->bind_param("s", $teamId);
@@ -29,7 +31,6 @@ if ($team) {
     echo "<p>Payment Status: " . ($team['paymentStatus'] ? 'Paid' : 'Pending') . "</p>";
     echo "<img src='" . $team['teamLogo'] . "' alt='Team Logo' style='width:100px;height:100px;'>";
 
-    // Fetch and display players of the team
     $sql_players = "SELECT playerName, contactNumber, playerImage, role FROM player WHERE teamName = ?";
     $stmt_players = $conn->prepare($sql_players);
     $stmt_players->bind_param("s", $team['teamName']);
@@ -55,5 +56,4 @@ if ($team) {
 }
 
 $conn->close();
-session_destroy();
 ?>
