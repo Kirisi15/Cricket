@@ -26,7 +26,12 @@
         <input type = "text" name ="teamName" placeholder = "Enter team name" required><br><br>
 
         <label for = "role" >Role : </label>
-        <input type = "file" name ="role" required><br><br>
+        <select>
+            <option value = "batter">Batter</option> 
+            <option value = "bowler">Bowler</option> 
+            <option value = "wicketkeeper">Wicket keeper</option> 
+            <option value = "all-rounders">all-rounders</option> 
+        </select>
 
         <input type="submit" name="submit" value="Register"> <br><br>
         
