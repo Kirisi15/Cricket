@@ -38,9 +38,12 @@
             text-decoration: underline;
             transition: 0.3s;
         }
+        .dropdown {
+            position: relative; 
+        }
         .dropdown-content {
             list-style-type: none;
-            display: none;
+            display: none; 
             position: absolute;
             min-width: 160px;
             top: 100%;
@@ -61,20 +64,27 @@
             text-decoration: underline;
         }
         .dropdown:hover .dropdown-content {
-            display: block;
+            display: block; 
         }
         .match-group, .rankings-group {
             margin: 20px;
             padding: 20px;
             border: 1px solid #ccc;
+            display: none; 
         }
-        .match-group h2, .rankings-group h2 {
-            margin: 10px 0;
+        .match-group.active {
+            display: block; 
         }
-        #matches {
-            position: absolute;
-            top: 30%;
-            left: 30%;
+        .rankings-group {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            display: block; 
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -99,79 +109,106 @@
     <div id="matches">
         <h1>Matches</h1>
 
-        <?php
-        include 'db.php';
-        $today = date('Y-m-d');
+        <button onclick="showMatches('upcoming')">Upcoming Matches</button>
+        <button onclick="showMatches('finished')">Finished Matches</button>
 
-        $upcomingMatchesSql = "SELECT * FROM matches WHERE date > ? ORDER BY date, time";
-        $stmt = $conn->prepare($upcomingMatchesSql);
-        $stmt->bind_param("s", $today);
-        $stmt->execute();
-        $upcomingResult = $stmt->get_result();
+        <div class="match-group active" id="upcoming-matches">
+            <h2>Upcoming Matches</h2>
+            <?php
+            include 'db.php';
+            $today = date('Y-m-d');
 
-        $finishedMatchesSql = "SELECT * FROM matches WHERE date <= ? ORDER BY date DESC, time DESC";
-        $stmtFinished = $conn->prepare($finishedMatchesSql);
-        $stmtFinished->bind_param("s", $today);
-        $stmtFinished->execute();
-        $finishedResult = $stmtFinished->get_result();
+            $upcomingMatchesSql = "SELECT * FROM matches WHERE date > ? ORDER BY date, time";
+            $stmt = $conn->prepare($upcomingMatchesSql);
+            $stmt->bind_param("s", $today);
+            $stmt->execute();
+            $upcomingResult = $stmt->get_result();
 
-        echo '<div class="match-group">';
-        echo '<h2>Upcoming Matches</h2>';
-        if ($upcomingResult->num_rows > 0) {
-            while ($match = $upcomingResult->fetch_assoc()) {
-                echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong> on ' . $match['date'] . ' at ' . $match['time'] . ' in ' . $match['venue'] . '</p>';
+            if ($upcomingResult->num_rows > 0) {
+                while ($match = $upcomingResult->fetch_assoc()) {
+                    echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong> on ' . $match['date'] . ' at ' . $match['time'] . ' in ' . $match['venue'] . '</p>';
+                }
+            } else {
+                echo '<p>No upcoming matches.</p>';
             }
-        } else {
-            echo '<p>No upcoming matches.</p>';
-        }
-        echo '</div>';
+            $stmt->close();
+            ?>
+        </div>
 
-        echo '<div class="match-group">';
-        echo '<h2>Finished Matches</h2>';
-        if ($finishedResult->num_rows > 0) {
-            while ($match = $finishedResult->fetch_assoc()) {
-                echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong> on ' . $match['date'] . ' - Score: ' . $match['scoreTeamA'] . ' - ' . $match['scoreTeamB'] . ' - Winner: ' . $match['winningTeam'] . '</p>';
+        <div class="match-group" id="finished-matches">
+            <h2>Finished Matches</h2>
+            <?php
+            $finishedMatchesSql = "SELECT * FROM matches WHERE date <= ? ORDER BY date DESC, time DESC";
+            $stmtFinished = $conn->prepare($finishedMatchesSql);
+            $stmtFinished->bind_param("s", $today);
+            $stmtFinished->execute();
+            $finishedResult = $stmtFinished->get_result();
+
+            if ($finishedResult->num_rows > 0) {
+                while ($match = $finishedResult->fetch_assoc()) {
+                    echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong> on ' . $match['date'] . ' - Score: ' . $match['scoreTeamA'] . ' - ' . $match['scoreTeamB'] . ' - Winner: ' . $match['winningTeam'] . '</p>';
+                }
+            } else {
+                echo '<p>No finished matches.</p>';
             }
-        } else {
-            echo '<p>No finished matches.</p>';
-        }
-        echo '</div>';
+            $stmtFinished->close();
+            ?>
+        </div>
 
-        $stmt->close();
-        $stmtFinished->close();
+        <div class="rankings-group">
+            <h2>Top 5 Teams</h2>
+            <?php
+            $rankingsSql = "
+            SELECT 
+               team.teamName, 
+            COUNT(matches.winningTeam) AS wins
+            FROM 
+               team
+            LEFT JOIN 
+               matches ON team.teamName = matches.winningTeam
+            GROUP BY 
+               team.teamName
+            ORDER BY 
+               wins DESC
+            LIMIT 5
+            ";
+            $rankingsResult = mysqli_query($conn, $rankingsSql);
 
-        $rankingsSql = "
-        SELECT 
-           team.teamName, 
-        COUNT(matches.winningTeam) AS wins
-        FROM 
-           team
-        LEFT JOIN 
-           matches ON team.teamName = matches.winningTeam
-        GROUP BY 
-           team.teamName
-        ORDER BY 
-           wins DESC
-        LIMIT 5
-        ";
-        $rankingsResult = mysqli_query($conn, $rankingsSql);
-
-        echo '<div class="rankings-group">';
-        echo '<h2>Top 5 Teams</h2>';
-        if (mysqli_num_rows($rankingsResult) > 0) {
-            $rank = 1;
-            while ($team = mysqli_fetch_assoc($rankingsResult)) {
-                echo '<p>' . $rank . '. ' . $team['teamName'] . ' - Wins: ' . $team['wins'] . '</p>';
-                $rank++;
+            if (mysqli_num_rows($rankingsResult) > 0) {
+                $rank = 1;
+                while ($team = mysqli_fetch_assoc($rankingsResult)) {
+                    echo '<p>' . $rank . '. ' . $team['teamName'] . ' - Wins: ' . $team['wins'] . '</p>';
+                    $rank++;
+                }
+            } else {
+                echo '<p>No rankings available.</p>';
             }
-        } else {
-            echo '<p>No rankings available.</p>';
-        }
-        echo '</div>';
-
-        mysqli_close($conn);
-        ?>
+            mysqli_close($conn);
+            ?>
+        </div>
 
     </div>
+
+    <script>
+        // JavaScript function to show the selected matches
+        function showMatches(type) {
+            const upcomingMatches = document.getElementById('upcoming-matches');
+            const finishedMatches = document.getElementById('finished-matches');
+
+            if (type === 'upcoming') {
+                upcomingMatches.classList.add('active');
+                finishedMatches.classList.remove('active');
+            } else {
+                finishedMatches.classList.add('active');
+                upcomingMatches.classList.remove('active');
+            }
+        }
+
+        // Show upcoming matches by default on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            showMatches('upcoming');
+        });
+    </script>
+
 </body>
 </html>

@@ -4,15 +4,14 @@ include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamUsername = $_POST['teamUsername'];
-    $managerName = $_POST['managerName'];
     $paymentStatus = $_POST['paymentStatus'];
     $teamLogo = $_POST['teamLogo'];
     $teamName = $_POST['teamName'];
 
     // Insert new team into team table
-    $sql = "INSERT INTO team (teamUsername, paymentStatus, managerName, teamLogo, teamName) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO team (teamUsername, paymentStatus, teamLogo, teamName) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sisss', $teamUsername, $paymentStatus, $managerName, $teamLogo, $teamName);
+    $stmt->bind_param('siss', $teamUsername, $paymentStatus, $teamLogo, $teamName);
 
     if ($stmt->execute()) {
         echo "<script>alert('Team created successfully.'); window.location.href='team-login.php';</script>";
@@ -37,8 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="teamUsername">Team Username:</label>
         <input type="text" id="teamUsername" name="teamUsername" required>
         
-        <label for="managerName">Manager Name:</label>
-        <input type="text" id="managerName" name="managerName" required>
+     
         
         <label for="paymentStatus">Payment Status (1 for Paid, 0 for Unpaid):</label>
         <input type="number" id="paymentStatus" name="paymentStatus" min="0" max="1" required>

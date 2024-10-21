@@ -1,11 +1,17 @@
 <?php
+session_start();
 include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $gmail = $_POST['gmail'];
+    $teamUsername = $_POST['teamUsername'];
+    $paymentStatus = $_POST['paymentStatus'];
+    $teamLogo = $_POST['teamLogo'];
+    $teamName = $_POST['teamName'];
 
+    // Step 1: Check if the username or Gmail already exists
     $checkSql = "SELECT * FROM authorizeduser WHERE authorizedUsername = ? OR gmail = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param('ss', $username, $gmail);
@@ -15,19 +21,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkResult->num_rows > 0) {
         echo "<script>alert('Username or email already exists. Please choose another.');</script>";
     } else {
-        $sql = "INSERT INTO authorizeduser (gmail, authorizedUsername, authorizedPassword) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sss', $gmail, $username, $password);
+        // Step 2: Insert new manager (authorizeduser) into the database
+        $sql_user = "INSERT INTO authorizeduser (gmail, authorizedUsername, authorizedPassword) VALUES (?, ?, ?)";
+        $stmt_user = $conn->prepare($sql_user);
+        $stmt_user->bind_param('sss', $gmail, $username, $password);
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Registration successful. Please login.'); window.location.href='team-options.php';</script>";
+        if ($stmt_user->execute()) {
+            // Get the newly created manager's ID (userId)
+
+            // Step 3: Insert new team into the team table
+            $sql_team = "INSERT INTO team (teamUsername, paymentStatus, teamLogo, teamName) VALUES ( ?, ?, ?, ?)";
+            $stmt_team = $conn->prepare($sql_team);
+            $stmt_team->bind_param('siss', $teamUsername, $paymentStatus, $teamLogo, $teamName );
+
+            if ($stmt_team->execute()) {
+                echo "<script>alert('Team and manager registered successfully. Please login.'); window.location.href='team-login.php';</script>";
+            } else {
+                echo "<script>alert('Error: Could not create team. Please try again.');</script>";
+            }
+            $stmt_team->close();
         } else {
-            echo "<script>alert('Error: Could not register. Please try again.');</script>";
+            echo "<script>alert('Error: Could not register manager. Please try again.');</script>";
         }
+        $stmt_user->close();
     }
 
     $checkStmt->close();
-    $stmt->close();
 }
 ?>
 
@@ -36,17 +55,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Registration</title>
+    <title>Team and Manager Registration</title>
 </head>
 <body>
-    <h2>Team Registration</h2>
+    <h2>Team and Manager Registration</h2>
     <form action="manager-register.php" method="POST">
+        <!-- Manager Registration Fields -->
         <label for="gmail">Gmail:</label>
         <input type="email" id="gmail" name="gmail" required>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
+
+        <!-- Team Registration Fields -->
+        <label for="teamUsername">Team Username:</label>
+        <input type="text" id="teamUsername" name="teamUsername" required>
+        
+        <label for="paymentStatus">Payment Status (1 for Paid, 0 for Unpaid):</label>
+        <input type="number" id="paymentStatus" name="paymentStatus" min="0" max="1" required>
+        
+        <label for="teamLogo">Team Logo:</label>
+        <input type="text" id="teamLogo" name="teamLogo" required>
+        
+        <label for="teamName">Team Name:</label>
+        <input type="text" id="teamName" name="teamName" required>
+        
         <button type="submit">Register</button>
     </form>
     <p>Already have an account? <a href="team-login.php">Login here</a></p>

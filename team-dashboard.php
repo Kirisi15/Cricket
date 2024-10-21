@@ -6,7 +6,11 @@ if (!isset($_SESSION['userId'])) {
     header('Location: team-login.php');
     exit;
 }
-
+if (isset($_POST['logout'])) {
+    session_destroy();
+    header('Location: team-login.php');
+    exit;
+}
 $loggedInUserId = $_SESSION['userId'];
 
 $sql = "SELECT teamId FROM authorizeduser WHERE userId = ?";
@@ -17,7 +21,7 @@ $stmt->bind_result($teamId);
 $stmt->fetch();
 $stmt->close();
 
-$sql_team = "SELECT teamName, managerName, teamLogo, paymentStatus FROM team WHERE teamId = ?";
+$sql_team = "SELECT teamName, teamLogo, paymentStatus FROM team WHERE teamId = ?";
 $stmt_team = $conn->prepare($sql_team);
 $stmt_team->bind_param("s", $teamId);
 $stmt_team->execute();
@@ -27,7 +31,6 @@ $stmt_team->close();
 
 if ($team) {
     echo "<h1>Team Dashboard - " . $team['teamName'] . "</h1>";
-    echo "<p>Manager: " . $team['managerName'] . "</p>";
     echo "<p>Payment Status: " . ($team['paymentStatus'] ? 'Paid' : 'Pending') . "</p>";
     echo "<img src='" . $team['teamLogo'] . "' alt='Team Logo' style='width:100px;height:100px;'>";
 
@@ -51,6 +54,13 @@ if ($team) {
     }
 
     echo "</div>";
+    echo "<a href='player-insert.php' style='margin-bottom:10px;'>Add New Player</a>";
+
+    echo "
+    <form action='team-dashboard.php' method='POST'>
+    <button type='submit' name='logout'>Logout</button>
+    </form>  ";
+
 } else {
     echo "<p>No team found for this user.</p>";
     echo "<a href='create-team.php'>Create a Team</a> ";
@@ -59,6 +69,4 @@ if ($team) {
 
 $conn->close();
 
-session_unset();  
-session_destroy(); 
 ?>
