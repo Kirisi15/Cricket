@@ -11,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamLogo = $_POST['teamLogo'];
     $teamName = $_POST['teamName'];
 
-    // Step 1: Check if the username or Gmail already exists
     $checkSql = "SELECT * FROM authorizeduser WHERE authorizedUsername = ? OR gmail = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param('ss', $username, $gmail);
@@ -21,15 +20,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkResult->num_rows > 0) {
         echo "<script>alert('Username or email already exists. Please choose another.');</script>";
     } else {
-        // Step 2: Insert new manager (authorizeduser) into the database
         $sql_user = "INSERT INTO authorizeduser (gmail, authorizedUsername, authorizedPassword) VALUES (?, ?, ?)";
         $stmt_user = $conn->prepare($sql_user);
         $stmt_user->bind_param('sss', $gmail, $username, $password);
 
         if ($stmt_user->execute()) {
-            // Get the newly created manager's ID (userId)
 
-            // Step 3: Insert new team into the team table
             $sql_team = "INSERT INTO team (teamUsername, paymentStatus, teamLogo, teamName) VALUES ( ?, ?, ?, ?)";
             $stmt_team = $conn->prepare($sql_team);
             $stmt_team->bind_param('siss', $teamUsername, $paymentStatus, $teamLogo, $teamName );
@@ -60,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <h2>Team and Manager Registration</h2>
     <form action="manager-register.php" method="POST">
-        <!-- Manager Registration Fields -->
         <label for="gmail">Gmail:</label>
         <input type="email" id="gmail" name="gmail" required>
         <label for="username">Username:</label>
@@ -68,7 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
 
-        <!-- Team Registration Fields -->
         <label for="teamUsername">Team Username:</label>
         <input type="text" id="teamUsername" name="teamUsername" required>
         

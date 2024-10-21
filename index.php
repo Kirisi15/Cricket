@@ -39,7 +39,7 @@
             transition: 0.3s;
         }
         .dropdown {
-            position: relative; 
+            position: relative;
         }
         .dropdown-content {
             list-style-type: none;
@@ -66,6 +66,37 @@
         .dropdown:hover .dropdown-content {
             display: block; 
         }
+        .slider {
+            width: 1200px; 
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .slide {
+            min-width: 400px; 
+            height: 200px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: lightgray;
+            border: 1px solid #ccc;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
         .match-group, .rankings-group {
             margin: 20px;
             padding: 20px;
@@ -81,10 +112,29 @@
             border: 1px solid #ccc;
             display: block; 
         }
-        button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
+
+        .topslider {
+            display: flex;
+            width: 1000px;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            margin: auto;
+            border: 1px solid #ccc;
+        }
+        .topslides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .topslide {
+            display: inline;
+            min-width: 1000px; 
+            height: 500px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: lightgray;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
@@ -106,9 +156,21 @@
         </ul>
     </nav>
 
+    <div class="topslider">
+        <div class="topslides">
+            <div class="topslide">Slide 1</div>
+            <div class="topslide">Slide 2</div>
+            <div class="topslide">Slide 3</div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="button" onclick="prevSlideTop()">Previous</button>
+        <button class="button" onclick="nextSlideTop()">Next</button>
+    </div>
+
     <div id="matches">
         <h1>Matches</h1>
-
         <button onclick="showMatches('upcoming')">Upcoming Matches</button>
         <button onclick="showMatches('finished')">Finished Matches</button>
 
@@ -186,11 +248,24 @@
             mysqli_close($conn);
             ?>
         </div>
+    </div>
 
+    <div class="slider">
+        <div class="slides">
+            <div class="slide">Slide 1</div>
+            <div class="slide">Slide 2</div>
+            <div class="slide">Slide 3</div>
+            <div class="slide">Slide 4</div>
+            <div class="slide">Slide 5</div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="button" onclick="prevSlide()">Previous</button>
+        <button class="button" onclick="nextSlide()">Next</button>
     </div>
 
     <script>
-        // JavaScript function to show the selected matches
         function showMatches(type) {
             const upcomingMatches = document.getElementById('upcoming-matches');
             const finishedMatches = document.getElementById('finished-matches');
@@ -204,11 +279,64 @@
             }
         }
 
-        // Show upcoming matches by default on page load
-        document.addEventListener("DOMContentLoaded", function() {
-            showMatches('upcoming');
-        });
-    </script>
+        let currentSlide = 0;
+        const slidesToShow = 3;
 
+        function showSlide(index) {
+            const slides = document.querySelector('.slides');
+            const totalSlides = document.querySelectorAll('.slide').length;
+
+            if (index < 0) {
+                currentSlide = 0;
+            } else if (index > totalSlides - slidesToShow) {
+                currentSlide = totalSlides - slidesToShow;
+            } else {
+                currentSlide = index;
+            }
+
+            const offset = -currentSlide * 400;
+            slides.style.transform = `translateX(${offset}px)`;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        showSlide(currentSlide);
+
+        let currentSlidetop = 0;
+
+        function showSlideTop(index) {
+            const slides = document.querySelector('.topslides');
+            const totalSlides = document.querySelectorAll('.topslide').length;
+
+            if (index < 0) {
+                currentSlidetop = totalSlides - 1; 
+            } else if (index >= totalSlides) {
+                currentSlidetop = 0; 
+            } else {
+                currentSlidetop = index; 
+            }
+
+            const offset = -currentSlidetop * 1000; 
+            slides.style.transform = `translateX(${offset}px)`;
+        }
+
+        function nextSlideTop() {
+            showSlideTop(currentSlidetop + 1);
+        }
+
+        function prevSlideTop() {
+            showSlideTop(currentSlidetop - 1);
+        }
+
+        showSlideTop(currentSlidetop);
+
+        setInterval(nextSlideTop, 3000); 
+    </script>
 </body>
 </html>
