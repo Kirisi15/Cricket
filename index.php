@@ -4,138 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navigation Bar with Matches and Rankings</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center; 
-        }
-        nav {
-            display: inline-block; 
-            margin: 20px auto; 
-            padding: 0;
-        }
-        .navbar {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center; 
-        }
-        .navbar li {
-            position: relative;
-            margin-right: 20px;
-        }
-        .navbar a {
-            color: black;
-            text-decoration: none;
-            padding: 14px 20px;
-            display: block;
-        }
-        .navbar a:hover {
-            text-decoration: underline;
-            transition: 0.3s;
-        }
-        .dropdown {
-            position: relative;
-        }
-        .dropdown-content {
-            list-style-type: none;
-            display: none; 
-            position: absolute;
-            min-width: 160px;
-            top: 100%;
-            z-index: 1;
-            padding: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .dropdown-content li {
-            width: 100%;
-        }
-        .dropdown-content a {
-            padding: 12px 16px;
-            text-align: center;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            text-decoration: underline;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block; 
-        }
-        .slider {
-            width: 1200px; 
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-            margin: 20px auto;
-            border: 1px solid #ccc;
-        }
-        .slides {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        .slide {
-            min-width: 400px; 
-            height: 200px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: lightgray;
-            border: 1px solid #ccc;
-        }
-        .buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .button {
-            margin: 0 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-        .match-group, .rankings-group {
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            display: none; 
-        }
-        .match-group.active {
-            display: block; 
-        }
-        .rankings-group {
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            display: block; 
-        }
 
-        .topslider {
-            display: flex;
-            width: 1000px;
-            height: 500px;
-            overflow: hidden;
-            position: relative;
-            margin: auto;
-            border: 1px solid #ccc;
-        }
-        .topslides {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        .topslide {
-            display: inline;
-            min-width: 1000px; 
-            height: 500px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: lightgray;
-            border: 1px solid #ccc;
-        }
+
     </style>
 </head>
 <body>
@@ -170,52 +42,63 @@
     </div>
 
     <div id="matches">
-        <h1>Matches</h1>
-        <button onclick="showMatches('upcoming')">Upcoming Matches</button>
-        <button onclick="showMatches('finished')">Finished Matches</button>
+    <h1>Matches</h1>
+    <button class="button" onclick="showMatches('upcoming')">Upcoming Matches</button>
+    <button class="button" onclick="showMatches('finished')">Finished Matches</button>
 
-        <div class="match-group active" id="upcoming-matches">
-            <h2>Upcoming Matches</h2>
-            <?php
-            include 'db.php';
-            $today = date('Y-m-d');
+    <div class="match-group active" id="upcoming-matches">
+        <h2>Upcoming Matches</h2>
+        <?php
+        include 'db.php';
+        $today = date('Y-m-d');
 
-            $upcomingMatchesSql = "SELECT * FROM matches WHERE date > ? ORDER BY date, time";
-            $stmt = $conn->prepare($upcomingMatchesSql);
-            $stmt->bind_param("s", $today);
-            $stmt->execute();
-            $upcomingResult = $stmt->get_result();
+        $upcomingMatchesSql = "SELECT * FROM matches WHERE date > ? ORDER BY date, time";
+        $stmt = $conn->prepare($upcomingMatchesSql);
+        $stmt->bind_param("s", $today);
+        $stmt->execute();
+        $upcomingResult = $stmt->get_result();
 
-            if ($upcomingResult->num_rows > 0) {
-                while ($match = $upcomingResult->fetch_assoc()) {
-                    echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong> on ' . $match['date'] . ' at ' . $match['time'] . ' in ' . $match['venue'] . '</p>';
-                }
-            } else {
-                echo '<p>No upcoming matches.</p>';
+        if ($upcomingResult->num_rows > 0) {
+            while ($match = $upcomingResult->fetch_assoc()) {
+                echo '<div class="match-box">';
+                echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong></p>';
+                echo '<p>Date: ' . $match['date'] . ' | Time: ' . $match['time'] . '</p>';
+                echo '<p>Venue: ' . $match['venue'] . '</p>';
+                echo '</div>';
             }
-            $stmt->close();
-            ?>
-        </div>
+        } else {
+            echo '<p>No upcoming matches.</p>';
+        }
+        $stmt->close();
+        ?>
+    </div>
 
-        <div class="match-group" id="finished-matches">
-            <h2>Finished Matches</h2>
-            <?php
-            $finishedMatchesSql = "SELECT * FROM matches WHERE date <= ? ORDER BY date DESC, time DESC";
-            $stmtFinished = $conn->prepare($finishedMatchesSql);
-            $stmtFinished->bind_param("s", $today);
-            $stmtFinished->execute();
-            $finishedResult = $stmtFinished->get_result();
+    <div class="match-group" id="finished-matches">
+        <h2>Finished Matches</h2>
+        <?php
+        $finishedMatchesSql = "SELECT * FROM matches WHERE date <= ? ORDER BY date DESC, time DESC";
+        $stmtFinished = $conn->prepare($finishedMatchesSql);
+        $stmtFinished->bind_param("s", $today);
+        $stmtFinished->execute();
+        $finishedResult = $stmtFinished->get_result();
 
-            if ($finishedResult->num_rows > 0) {
-                while ($match = $finishedResult->fetch_assoc()) {
-                    echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong> on ' . $match['date'] . ' - Score: ' . $match['scoreTeamA'] . ' - ' . $match['scoreTeamB'] . ' - Winner: ' . $match['winningTeam'] . '</p>';
-                }
-            } else {
-                echo '<p>No finished matches.</p>';
+        if ($finishedResult->num_rows > 0) {
+            while ($match = $finishedResult->fetch_assoc()) {
+                echo '<div class="match-box">';
+                echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong></p>';
+                echo '<p>Date: ' . $match['date'] . '</p>';
+                echo '<p>Score: ' . $match['scoreTeamA'] . ' - ' . $match['scoreTeamB'] . '</p>';
+                echo '<p>Winner: ' . $match['winningTeam'] . '</p>';
+                echo '</div>';
             }
-            $stmtFinished->close();
-            ?>
-        </div>
+        } else {
+            echo '<p>No finished matches.</p>';
+        }
+        $stmtFinished->close();
+        ?>
+    </div>
+</div>
+
 
         <div class="rankings-group">
             <h2>Top 5 Teams</h2>
@@ -239,7 +122,7 @@
             if (mysqli_num_rows($rankingsResult) > 0) {
                 $rank = 1;
                 while ($team = mysqli_fetch_assoc($rankingsResult)) {
-                    echo '<p>' . $rank . '. ' . $team['teamName'] . ' - Wins: ' . $team['wins'] . '</p>';
+                    echo '<div class="team-row"><p>' . $rank . '. ' . $team['teamName'] . ' - Wins: ' . $team['wins'] . '</p></div>';
                     $rank++;
                 }
             } else {
@@ -322,7 +205,7 @@
                 currentSlidetop = index; 
             }
 
-            const offset = -currentSlidetop * 1000; 
+            const offset = -currentSlidetop * 1400; 
             slides.style.transform = `translateX(${offset}px)`;
         }
 
