@@ -1,5 +1,5 @@
 <?php
-    include 'db.php';
+    include 'dbConnect.php';
     
     if(isset($_POST['submit'])){
         $playername = $_POST['playerName'];
