@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $teamLogo = $_POST['teamLogo'];
     $teamName = $_POST['teamName'];
 
-    // Insert new team into team table
     $sql = "INSERT INTO team (teamUsername, paymentStatus, teamLogo, teamName) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('siss', $teamUsername, $paymentStatus, $teamLogo, $teamName);

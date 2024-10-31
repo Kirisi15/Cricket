@@ -45,19 +45,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateMatch'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Match</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e3eaf2;
+            color: #2a3a83;
+        }
+
+        h1 {
+            color: #2a3a83;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #f1f5fc;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #2a3a83;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #43429e;
+        }
+    </style>
 </head>
 <body>
     <h1>Edit Match Details</h1>
 
     <form action="update-results.php?matchId=<?= $match['matchId'] ?>" method="POST">
         <label for="scoreTeamA">Score Team A:</label>
-        <input type="number" id="scoreTeamA" name="scoreTeamA" value="<?= $match['scoreTeamA'] ?>" required><br><br>
+        <input type="number" id="scoreTeamA" name="scoreTeamA" value="<?= $match['scoreTeamA'] ?>" required>
 
         <label for="scoreTeamB">Score Team B:</label>
-        <input type="number" id="scoreTeamB" name="scoreTeamB" value="<?= $match['scoreTeamB'] ?>" required><br><br>
+        <input type="number" id="scoreTeamB" name="scoreTeamB" value="<?= $match['scoreTeamB'] ?>" required>
 
         <label for="winningTeam">Winning Team:</label>
-        <input type="text" id="winningTeam" name="winningTeam" value="<?= $match['winningTeam'] ?>" required><br><br>
+        <input type="text" id="winningTeam" name="winningTeam" value="<?= $match['winningTeam'] ?>" required>
 
         <button type="submit" name="updateMatch">Update Match</button>
     </form>

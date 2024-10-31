@@ -25,30 +25,46 @@ $result = mysqli_query($conn, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Rankings</title>
     <style>
-        body {
+       body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            background-color: #e3eaf2;
+            color: #2a3a83;
+        }
+
+        h2 {
+            color: #2a3a83;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         table {
-            width: 50%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #f1f5fc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-        table, th, td {
-            border: 1px solid black;
-        }
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+}
 
-        th, td {
-            padding: 12px;
-        }
+th {
+    background-color: #2a3a83;
+    color: #ffffff;
+}
 
-        th {
-            background-color: #f2f2f2;
-        }
+tr:hover {
+    background-color: #e3eaf2;
+}
+
 
         h1 {
             margin-top: 20px;

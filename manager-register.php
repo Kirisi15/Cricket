@@ -52,31 +52,129 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team and Manager Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #e3eaf2;
+            color: #2a3a83;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #2a3a83;
+            margin-top: 20px;
+        }
+
+        form {
+            display: inline-block;
+            background-color: #f1f5fc;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+            text-align: left; 
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #2a3a83;
+            margin: 20px 0 10px;
+            border-bottom: 2px solid #2a3a83;
+            padding-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            color: #2a3a83;
+            margin-bottom: 5px;
+        }
+
+        input[type="email"],
+        input[type="text"],
+        input[type="password"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #ffffff;
+        }
+
+        /* Button Styling */
+        button[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #2a3a83;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #43429e;
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        a {
+            color: #2a3a83;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #43429e;
+        }
+    </style>
 </head>
 <body>
     <h2>Team and Manager Registration</h2>
-    <form action="manager-register.php" method="POST">
-        <label for="gmail">Gmail:</label>
-        <input type="email" id="gmail" name="gmail" required>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
 
-        <label for="teamUsername">Team Username:</label>
-        <input type="text" id="teamUsername" name="teamUsername" required>
-        
-        <label for="paymentStatus">Payment Status (1 for Paid, 0 for Unpaid):</label>
-        <input type="number" id="paymentStatus" name="paymentStatus" min="0" max="1" required>
-        
-        <label for="teamLogo">Team Logo:</label>
-        <input type="text" id="teamLogo" name="teamLogo" required>
-        
-        <label for="teamName">Team Name:</label>
-        <input type="text" id="teamName" name="teamName" required>
+    <form action="manager-register.php" method="POST">
+        <div class="manager-details">
+            <h3 class="section-title">Manager Details</h3>
+            <label for="gmail">Manager Gmail:</label>
+            <input type="email" id="gmail" name="gmail" required>
+            <label for="username">Manager Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="team-details">
+            <h3 class="section-title">Team Details</h3>
+            <label for="teamUsername">Team Username:</label>
+            <input type="text" id="teamUsername" name="teamUsername" required>
+            
+            <label for="paymentStatus">Payment Status (1 for Paid, 0 for Unpaid):</label>
+            <input type="number" id="paymentStatus" name="paymentStatus" min="0" max="1" required>
+            
+            <label for="teamLogo">Team Logo:</label>
+            <input type="text" id="teamLogo" name="teamLogo" required>
+            
+            <label for="teamName">Team Name:</label>
+            <input type="text" id="teamName" name="teamName" required>
+        </div>
         
         <button type="submit">Register</button>
     </form>
     <p>Already have an account? <a href="team-login.php">Login here</a></p>
 </body>
 </html>
+

@@ -36,10 +36,7 @@
         </div>
     </div>
 
-    <div class="buttons">
-        <button class="button" onclick="prevSlideTop()">Previous</button>
-        <button class="button" onclick="nextSlideTop()">Next</button>
-    </div>
+    
 
     <div id="matches">
     <h1>Matches</h1>
@@ -59,13 +56,26 @@
         $upcomingResult = $stmt->get_result();
 
         if ($upcomingResult->num_rows > 0) {
+            echo '<table>';
+            echo '<thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Venue</th>
+                    </tr>
+                  </thead>';
+            echo '<tbody>';
             while ($match = $upcomingResult->fetch_assoc()) {
-                echo '<div class="match-box">';
-                echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong></p>';
-                echo '<p>Date: ' . $match['date'] . ' | Time: ' . $match['time'] . '</p>';
-                echo '<p>Venue: ' . $match['venue'] . '</p>';
-                echo '</div>';
+                echo '<tr>';
+                echo '<td><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong></td>';
+                echo '<td>' . $match['date'] . '</td>';
+                echo '<td>' . $match['time'] . '</td>';
+                echo '<td>' . $match['venue'] . '</td>';
+                echo '</tr>';
             }
+            echo '</tbody>';
+            echo '</table>';
         } else {
             echo '<p>No upcoming matches.</p>';
         }
@@ -83,14 +93,26 @@
         $finishedResult = $stmtFinished->get_result();
 
         if ($finishedResult->num_rows > 0) {
+            echo '<table>';
+            echo '<thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Date</th>
+                        <th>Score</th>
+                        <th>Winner</th>
+                    </tr>
+                  </thead>';
+            echo '<tbody>';
             while ($match = $finishedResult->fetch_assoc()) {
-                echo '<div class="match-box">';
-                echo '<p><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong></p>';
-                echo '<p>Date: ' . $match['date'] . '</p>';
-                echo '<p>Score: ' . $match['scoreTeamA'] . ' - ' . $match['scoreTeamB'] . '</p>';
-                echo '<p>Winner: ' . $match['winningTeam'] . '</p>';
-                echo '</div>';
+                echo '<tr>';
+                echo '<td><strong>' . $match['teamIdA'] . '</strong> vs <strong>' . $match['teamIdB'] . '</strong></td>';
+                echo '<td>' . $match['date'] . '</td>';
+                echo '<td>' . $match['scoreTeamA'] . ' - ' . $match['scoreTeamB'] . '</td>';
+                echo '<td>' . $match['winningTeam'] . '</td>';
+                echo '</tr>';
             }
+            echo '</tbody>';
+            echo '</table>';
         } else {
             echo '<p>No finished matches.</p>';
         }
@@ -100,38 +122,54 @@
 </div>
 
 
-        <div class="rankings-group">
-            <h2>Top 5 Teams</h2>
-            <?php
-            $rankingsSql = "
-            SELECT 
-               team.teamName, 
-            COUNT(matches.winningTeam) AS wins
-            FROM 
-               team
-            LEFT JOIN 
-               matches ON team.teamName = matches.winningTeam
-            GROUP BY 
-               team.teamName
-            ORDER BY 
-               wins DESC
-            LIMIT 5
-            ";
-            $rankingsResult = mysqli_query($conn, $rankingsSql);
 
-            if (mysqli_num_rows($rankingsResult) > 0) {
-                $rank = 1;
-                while ($team = mysqli_fetch_assoc($rankingsResult)) {
-                    echo '<div class="team-row"><p>' . $rank . '. ' . $team['teamName'] . ' - Wins: ' . $team['wins'] . '</p></div>';
-                    $rank++;
-                }
-            } else {
-                echo '<p>No rankings available.</p>';
-            }
-            mysqli_close($conn);
-            ?>
-        </div>
-    </div>
+<div class="rankings-group">
+    <h2>Top 5 Teams</h2>
+    <?php
+    include 'db.php'; 
+
+    $rankingsSql = "
+    SELECT 
+       team.teamName, 
+       COUNT(matches.winningTeam) AS wins
+    FROM 
+       team
+    LEFT JOIN 
+       matches ON team.teamName = matches.winningTeam
+    GROUP BY 
+       team.teamName
+    ORDER BY 
+       wins DESC
+    LIMIT 5
+    ";
+    $rankingsResult = mysqli_query($conn, $rankingsSql);
+
+    if (mysqli_num_rows($rankingsResult) > 0) {
+        echo "<table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team Name</th>
+                        <th>Wins</th>
+                    </tr>
+                </thead>
+                <tbody>";
+        $rank = 1;
+        while ($team = mysqli_fetch_assoc($rankingsResult)) {
+            echo "<tr>
+                    <td>{$rank}</td>
+                    <td>{$team['teamName']}</td>
+                    <td>{$team['wins']}</td>
+                  </tr>";
+            $rank++;
+        }
+        echo "</tbody></table>";
+    } else {
+        echo "<p>No rankings available.</p>";
+    }
+    mysqli_close($conn);
+    ?>
+</div>
 
     <div class="slider">
         <div class="slides">
@@ -140,13 +178,18 @@
             <div class="slide">Slide 3</div>
             <div class="slide">Slide 4</div>
             <div class="slide">Slide 5</div>
+            
         </div>
+        <div class="buttons">
+        <button class="slide-button" onclick="prevSlide()">Previous</button>
+        <button class="slide-button" onclick="nextSlide()">Next</button>
+     </div>
     </div>
 
-    <div class="buttons">
-        <button class="button" onclick="prevSlide()">Previous</button>
-        <button class="button" onclick="nextSlide()">Next</button>
-    </div>
+    
+    <footer>
+
+    </footer>
 
     <script>
         function showMatches(type) {
@@ -177,8 +220,8 @@
                 currentSlide = index;
             }
 
-            const offset = -currentSlide * 400;
-            slides.style.transform = `translateX(${offset}px)`;
+            const offset = -currentSlide * 33.3333;
+            slides.style.transform = `translateX(${offset}%)`;
         }
 
         function nextSlide() {
