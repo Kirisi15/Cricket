@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     text-align: center; 
-    background-color: #f0f4f9;
+    background-color: #edf5fe;
     color: #333;
 }
 
@@ -34,6 +34,7 @@ nav {
 .navbar li:hover {
     background-color: #1d67a3;
     border-radius: 10px;
+    
 }
 
 .navbar a {
@@ -45,9 +46,7 @@ nav {
 }
 
 .navbar a:hover {
-    transition: 0.3s;
     color: #ffffff;
-
 }
 
 /* Dropdown */
@@ -64,8 +63,6 @@ nav {
     top: 100%;
     z-index: 1;
     padding: 0;
-    left: 50%;
-    transform: translateX(-50%);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }
@@ -85,19 +82,88 @@ nav {
     display: block;
 }
 
+/* Mobile Navigation */
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .nav{
+        padding: 0;
+    }
+    .nav-toggle {
+        width: 96%;
+        margin: 0;
+        display: block;
+        background-color: #2a3a83;
+        color: #ffffff;
+        border: none;
+        padding: 0px;
+        font-size: 30px;
+        cursor: pointer;
+        text-align: left;
+    }
+    .nav-toggle:hover {
+        background-color: #2a3a83;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        display: none;
+        background-color: #2a3a83;
+        padding: 0;
+    }
+
+    .navbar.active {
+        display: flex;
+    }
+
+    .navbar li {
+        width: 96%;
+
+        border-bottom: 1px solid #1d67a3;
+    }
+
+    .navbar li:last-child {
+        border-bottom: none;
+    }
+
+    .navbar a {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+    }
+
+    .dropdown-content {
+        left: 0;
+        transform: none;
+        width: 100%;
+    }
+
+    .dropdown-content a {
+        padding: 10px 20px;
+    }
+    .dropdown-content li:hover {
+        background-color: #1d67a3;
+        width: 100%;
+    }
+ 
+}
 
 /* Slider Styles */
 .topslider {
     margin-top: 80px;
-    width: 1400px;
+    width: 98%;
     margin-left: auto;
     margin-right: auto;
-    height: 500px;
+    height: 600px;
     overflow: hidden;
     border: 1px solid #ccc;
     border-radius: 20px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    background-color: #e3eaf2;
+    background: linear-gradient(to right, #2a3a83, #43429e);
+    position: relative;
 }
 
 .topslides {
@@ -106,18 +172,59 @@ nav {
 }
 
 .topslide {
-    display: inline;
-    min-width: 1400px; 
-    height: 500px; 
+    min-width: 100%; 
+    height: 600px; 
+    position: relative;
+}
+
+.topslide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #e3eaf2;
-    border: 1px solid #ccc;
-    color: #2a3a83;
-    font-size: 24px;
-    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4); 
+    border-radius: 20px; 
 }
+.overlay h1 {
+    font-size: 70px;
+    margin: 0;
+    color: #ffffff;
+}
+
+.overlay p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.overlay button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #2a3a83;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.overlay button:hover {
+    background-color: #43429e;
+    color: #fff;
+}
+
 
 /* Buttons */
 .buttons {
@@ -133,27 +240,53 @@ button{
     font-size: 16px;
     font-weight: bold;
     color: #fff;
-    background-color: #2a3a83;
+    background-color: #24316e;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     margin: 10px;
 }
 
 button:hover {
-    background-color: #43429e;
+    background-color: #6c6bc8;
+}
+
+@media(max-width: 768px) {
+ 
+
+  
+
+   
+
+    .overlay h1 {
+        font-size: 35px;
+    }
+
+    .overlay p {
+        font-size: 14px;
+    }
+
+    .overlay button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+    
 }
 
 /* Match Section */
 #matches {
+    background: linear-gradient(to bottom, #2a3a83, #7270e6);
     border: 1px solid #ccc;
     margin: 20px;
     border-radius: 10px;
-    background-color: #ffffff;
+}
+#matches h1{
+
+    color: #ffffff;
 }
 
-.match-group, .rankings-group {
+.match-group {
+
     margin: 20px;
     padding: 20px;
     display: none;
@@ -161,6 +294,10 @@ button:hover {
 
 .match-group.active {
     display: block;
+}
+.match-group.active h2{
+
+    color: #e3eaf2;
 }
 
 /* Rankings */
@@ -193,8 +330,13 @@ tr:hover {
     margin: 60px 20px;
     padding: 20px;
     border: 1px solid #ccc;
+    border-radius: 10px;
     display: block;
-    background-color: #ffffff;
+    background: linear-gradient(to bottom, #2a3a83, #7270e6);
+}
+.rankings-group h2{
+
+    color: #ffffff;
 }
 
 .team-row {
@@ -237,6 +379,7 @@ tr:hover {
     transition: transform 0.5s ease;
 }
 
+/* Slider Box */
 .slide {
     margin-top: 50px;
     margin-bottom: 0;
@@ -245,18 +388,41 @@ tr:hover {
     min-width: 31.33333%; 
     height: 460px; 
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end; /* Change this line */
     background-color: #f1f5fc;
     border-radius: 10px;
     color: #2a3a83;
     font-size: 20px;
     font-weight: bold;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    overflow: hidden;
+    position: relative; /* Add this line */
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.slide p {
+    padding: 10px;
+    font-size: 16px;
+    color: #fff; /* Change this line */
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    margin: 0; /* Add this line */
 }
 
 .slide-button{
     width: 110px;
+    
 
 }
 
@@ -274,7 +440,37 @@ a:hover {
     color: #134b7f;
 }
 
-footer{
+footer {
+    background-color: #2a3a83; /* Same color as nav bar */
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    margin-top: -30px; /* Add this line to move the footer up */
+}
 
-    height: 200px;
+footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer .footer-content p {
+    margin: 5px 0;
+}
+
+footer .social-icons {
+    margin-top: 10px;
+}
+
+footer .social-icons a {
+    color: #ffffff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #1d67a3;
 }

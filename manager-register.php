@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #e3eaf2;
+            background-color: #ffffff;
             color: #2a3a83;
         }
 
@@ -110,7 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-color: #ffffff;
         }
 
-        /* Button Styling */
         button[type="submit"] {
             padding: 10px 20px;
             font-size: 16px;
