@@ -1,0 +1,476 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center; 
+    background-color: #edf5fe;
+    color: #333;
+}
+
+/* Navigation Bar */
+nav {
+    z-index: 100;
+    display: block; 
+    top: 0;
+    position: fixed;
+    padding: 10px;
+    background-color: #2a3a83;
+    width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; 
+}
+
+.navbar li {
+    position: relative;
+}
+
+.navbar li:hover {
+    background-color: #1d67a3;
+    border-radius: 10px;
+    
+}
+
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 14px 20px;
+    display: block;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+.navbar a:hover {
+    color: #ffffff;
+}
+
+/* Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    list-style-type: none;
+    display: none; 
+    position: absolute;
+    background-color: #2a3a83;
+    min-width: 160px;
+    top: 100%;
+    z-index: 1;
+    padding: 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.dropdown-content li:hover {
+    background-color: #1d67a3;
+}
+
+.dropdown-content a {
+    color: #ffffff;
+    padding: 12px 16px;
+    text-align: center;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Mobile Navigation */
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .nav{
+        padding: 0;
+    }
+    .nav-toggle {
+        width: 96%;
+        margin: 0;
+        display: block;
+        background-color: #2a3a83;
+        color: #ffffff;
+        border: none;
+        padding: 0px;
+        font-size: 30px;
+        cursor: pointer;
+        text-align: left;
+    }
+    .nav-toggle:hover {
+        background-color: #2a3a83;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        display: none;
+        background-color: #2a3a83;
+        padding: 0;
+    }
+
+    .navbar.active {
+        display: flex;
+    }
+
+    .navbar li {
+        width: 96%;
+
+        border-bottom: 1px solid #1d67a3;
+    }
+
+    .navbar li:last-child {
+        border-bottom: none;
+    }
+
+    .navbar a {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+    }
+
+    .dropdown-content {
+        left: 0;
+        transform: none;
+        width: 100%;
+    }
+
+    .dropdown-content a {
+        padding: 10px 20px;
+    }
+    .dropdown-content li:hover {
+        background-color: #1d67a3;
+        width: 100%;
+    }
+ 
+}
+
+/* Slider Styles */
+.topslider {
+    margin-top: 80px;
+    width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 600px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to right, #2a3a83, #43429e);
+    position: relative;
+}
+
+.topslides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.topslide {
+    min-width: 100%; 
+    height: 600px; 
+    position: relative;
+}
+
+.topslide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4); 
+    border-radius: 20px; 
+}
+.overlay h1 {
+    font-size: 70px;
+    margin: 0;
+    color: #ffffff;
+}
+
+.overlay p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.overlay button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #2a3a83;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.overlay button:hover {
+    background-color: #43429e;
+    color: #fff;
+}
+
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+
+
+button{
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #24316e;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #6c6bc8;
+}
+
+@media(max-width: 768px) {
+ 
+
+  
+
+   
+
+    .overlay h1 {
+        font-size: 35px;
+    }
+
+    .overlay p {
+        font-size: 14px;
+    }
+
+    .overlay button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+    
+}
+
+/* Match Section */
+#matches {
+    background: linear-gradient(to bottom, #2a3a83, #7270e6);
+    border: 1px solid #ccc;
+    margin: 20px;
+    border-radius: 10px;
+}
+#matches h1{
+
+    color: #ffffff;
+}
+
+.match-group {
+
+    margin: 20px;
+    padding: 20px;
+    display: none;
+}
+
+.match-group.active {
+    display: block;
+}
+.match-group.active h2{
+
+    color: #e3eaf2;
+}
+
+/* Rankings */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #f1f5fc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+}
+
+th {
+    background-color: #2a3a83;
+    color: #ffffff;
+}
+
+tr:hover {
+    background-color: #e3eaf2;
+}
+.rankings-group {
+    margin: 60px 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: block;
+    background: linear-gradient(to bottom, #2a3a83, #7270e6);
+}
+.rankings-group h2{
+
+    color: #ffffff;
+}
+
+.team-row {
+    border: 1px solid #2a3a83;
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: #d3e5ff;
+    border-radius: 5px;
+}
+
+/* Match Box */
+.match-box {
+    border: 1px solid #c7c7c7;
+    padding: 20px;
+    margin: 10px 0;
+    background-color: #f1f5fc;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+.match-box p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+/* Slider Container */
+.slider {
+    width: 100%; 
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+    margin: 20px auto;
+    background-color: #ffffff;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+/* Slider Box */
+.slide {
+    margin-top: 50px;
+    margin-bottom: 0;
+    margin-left: 1%;
+    margin-right: 1%;
+    min-width: 31.33333%; 
+    height: 460px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; /* Change this line */
+    background-color: #f1f5fc;
+    border-radius: 10px;
+    color: #2a3a83;
+    font-size: 20px;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    overflow: hidden;
+    position: relative; /* Add this line */
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.slide p {
+    padding: 10px;
+    font-size: 16px;
+    color: #fff; /* Change this line */
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    margin: 0; /* Add this line */
+}
+
+.slide-button{
+    width: 110px;
+    
+
+}
+
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: #2a3a83;
+}
+
+a {
+    color: #1d67a3;
+}
+
+a:hover {
+    color: #134b7f;
+}
+
+footer {
+    background-color: #2a3a83; /* Same color as nav bar */
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    margin-top: -30px; /* Add this line to move the footer up */
+}
+
+footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer .footer-content p {
+    margin: 5px 0;
+}
+
+footer .social-icons {
+    margin-top: 10px;
+}
+
+footer .social-icons a {
+    color: #ffffff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #1d67a3;
+}
