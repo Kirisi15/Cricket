@@ -28,14 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Team</title>
+    <link rel="stylesheet" href="create-team.css">
 </head>
 <body>
     <h2>Create Team</h2>
     <form action="create-team.php" method="POST">
         <label for="teamUsername">Team Username:</label>
         <input type="text" id="teamUsername" name="teamUsername" required>
-        
-     
         
         <label for="paymentStatus">Payment Status (1 for Paid, 0 for Unpaid):</label>
         <input type="number" id="paymentStatus" name="paymentStatus" min="0" max="1" required>
