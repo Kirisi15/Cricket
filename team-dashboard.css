@@ -70,24 +70,31 @@ a:hover {
 /* Card Container */
 .card {
     margin: 10px;
-    width: 300px;
+    width: 250px; /* Ensure width allows multiple cards per row */
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.2s ease;
     background-color: #ffffff;
+    display: flex;
+    flex-direction: column; /* Ensure content stacks vertically */
 }
 
 /* Image */
 .card-img {
     width: 100%;
-    height: auto;
+    height: 150px; /* Set a fixed height for consistency */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
 }
 
 /* Card Body */
 .card-body {
     padding: 16px;
+    flex-grow: 1; /* Allow the body to take up remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Title */
@@ -116,12 +123,23 @@ a:hover {
 }
 
 .team-logo {
-    width: 100px;
-    height: 100px;
+    width: 150px; /* Increased size for better visibility */
+    height: 150px; /* Ensured height matches width for consistency */
+    object-fit: contain; /* Maintain aspect ratio without distortion */
+    margin: 20px auto; /* Center the logo with margin */
+}
+
+/* Ensure all elements use border-box sizing */
+* {
+    box-sizing: border-box;
 }
 
 .player-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 20px; /* Added gap between cards */
+    padding: 20px; /* Added padding for better spacing */
+    align-items: flex-start; /* Align items to start to prevent overlap */
 }
+

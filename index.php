@@ -15,6 +15,8 @@
         <button class="nav-toggle" onclick="toggleNav()">☰</button>
         <ul class="navbar">
             <li><a href="index.php">Home</a></li>
+            <li><a href="team/teams.php">Teams</a></li>
+
             <li><a href="#matches">Matches</a></li>
             <li><a href="#news">News</a></li>
             <li><a href="rankings.php">Rankings</a></li>

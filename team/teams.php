@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teams</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 <link rel="stylesheet" href="../header/header-styles.css">
 <link rel="stylesheet" href="teams-styles.css">
@@ -15,7 +15,10 @@
 
   <style>
     
-
+    body {
+        margin: 0;
+        padding: 0;
+    }
 
     .team-description {
 
@@ -60,7 +63,7 @@
 
       display: flex;
       flex-direction: column;
-      margin-top: 50px;
+      margin-top: 100px; /* Increased from 50px to 100px to shift slider below nav bar */
       margin-bottom:100px;
       align-items: center;
       background: linear-gradient(to bottom, #2a3a83, #7270e6);
@@ -203,12 +206,167 @@
 
     }
 
+    nav {
+    z-index: 100;
+    display: block; 
+    top: 0;
+    position: fixed;
+    padding: 10px 0; /* Changed from padding: 10px; */
+    background-color: #2a3a83;
+    width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 0; /* Added to remove any default margins */
+}
 
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; 
+}
 
+.navbar li {
+    position: relative;
+}
 
+.navbar li:hover {
+    background-color: #1d67a3;
+    border-radius: 10px;
+    
+}
 
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 14px 20px;
+    display: block;
+    font-family: 'Trebuchet MS', sans-serif;
+}
 
+.navbar a:hover {
+    color: #ffffff;
+}
 
+/* Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    list-style-type: none;
+    display: none; 
+    position: absolute;
+    background-color: #2a3a83;
+    min-width: 160px;
+    top: 100%;
+    z-index: 1;
+    padding: 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.dropdown-content li:hover {
+    background-color: #1d67a3;
+}
+
+.dropdown-content a {
+    color: #ffffff;
+    padding: 12px 16px;
+    text-align: center;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Mobile Navigation */
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .nav{
+        padding: 0;
+    }
+    .nav-toggle {
+        width: 96%;
+        margin: 0;
+        display: block;
+        background-color: #2a3a83;
+        color: #ffffff;
+        border: none;
+        padding: 0px;
+        font-size: 30px;
+        cursor: pointer;
+        text-align: left;
+    }
+    .nav-toggle:hover {
+        background-color: #2a3a83;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        display: none;
+        background-color: #2a3a83;
+        padding: 0;
+    }
+
+    .navbar.active {
+        display: flex;
+    }
+
+    .navbar li {
+        width: 96%;
+
+        border-bottom: 1px solid #1d67a3;
+    }
+
+    .navbar li:last-child {
+        border-bottom: none;
+    }
+
+    .navbar a {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+    }
+
+    .dropdown-content {
+        left: 0;
+        transform: none;
+        width: 100%;
+    }
+
+    .dropdown-content a {
+        padding: 10px 20px;
+    }
+    .dropdown-content li:hover {
+        background-color: #1d67a3;
+        width: 100%;
+    }
+ 
+}
+
+.footer-content {
+    background-color: #2a3a83;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.social-icons a {
+    color: #ffffff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.social-icons a:hover {
+    color: #ddd;
+}
 
   </style>
 
@@ -272,7 +430,7 @@
           echo "<div class='team-slide'>";
           echo "<div class='team-logo-and-description'>";
           echo "<div class='logo'>";
-          echo "<a href='/Cricket-final/players/players.php?teamName=" . $row['teamName'] . "'>";
+          echo "<a href='/Cricket/team/teamplayers.php?teamName=" . $row['teamName'] . "'>";
           echo "<img src='/" . $row['teamLogo'] . "' width=200 height=200>";
           echo "</a>";
           echo "</div>
@@ -301,7 +459,7 @@
           echo "<div class='team-slide'>";
           echo "<div class='team-logo-and-description'>";
           echo "<div class='logo'>";
-          echo "<a href='/Cricket-final/players/players.php?teamName=" . $row['teamName'] . "'>";
+          echo "<a href='/Cricket/team/teamplayers.php?teamName=" . $row['teamName'] . "'>";
           echo "<img src='/" . $row['teamLogo'] . "' width=200 height=200>";
           echo "</a>";
           echo "</div>
@@ -330,7 +488,7 @@
           echo "<div class='team-slide'>";
           echo "<div class='team-logo-and-description'>";
           echo "<div class='logo'>";
-          echo "<a href='/Cricket-final/players/players.php?teamName=" . $row['teamName'] . "'>";
+          echo "<a href='/Cricket/team/teamplayers.php?teamName=" . $row['teamName'] . "'>";
           echo "<img src='/" . $row['teamLogo'] . "' width=200 height=200>";
           echo "</a>";
           echo "</div>
@@ -359,7 +517,7 @@
           echo "<div class='team-slide'>";
           echo "<div class='team-logo-and-description'>";
           echo "<div class='logo'>";
-          echo "<a href='/Cricket-final/players/players.php?teamName=" . $row['teamName'] . "'>";
+          echo "<a href='/Cricket/team/teamplayers.php?teamName=" . $row['teamName'] . "'>";
           echo "<img src='/" . $row['teamLogo'] . "' width=200 height=200>";
           echo "</a>";
           echo "</div>
@@ -387,7 +545,7 @@
           echo "<div class='team-slide'>";
           echo "<div class='team-logo-and-description'>";
           echo "<div class='logo'>";
-          echo "<a href='/Cricket-final/players/players.php?teamName=" . $row['teamName'] . "'>";
+          echo "<a href='/Cricket/team/teamplayers.php?teamName=" . $row['teamName'] . "'>";
           echo "<img src='/" . $row['teamLogo'] . "' width=200 height=200>";
           echo "</a>";
           echo "</div>
@@ -578,6 +736,20 @@ dots[slideIndex].className += " active";
         navbar.classList.toggle('active');
     }
   </script>
+
+  <!-- Footer -->
+  <footer>
+      <div class="footer-content">
+          <p>&copy; 2023 Cricket World. All rights reserved.</p>
+          <p>Contact us: info@cricketworld.com</p>
+          <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+      </div>
+  </footer>
 
 </body>
 
