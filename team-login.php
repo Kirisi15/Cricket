@@ -6,18 +6,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM authorizeduser WHERE authorizedUsername = ? AND authorizedPassword = ?";
+    $sql = "SELECT * FROM authorizeduser WHERE authorizedUsername = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ss', $username, $password);
+    $stmt->bind_param('s', $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        $_SESSION['userId'] = $user['userId']; 
-        $_SESSION['authorized_user'] = $username;
-        header("Location: team-dashboard.php");
-        exit();
+        if (password_verify($password, $user['authorizedPassword'])) {
+            $_SESSION['userId'] = $user['userId']; 
+            $_SESSION['authorized_user'] = $username;
+            header("Location: team-dashboard.php");
+            exit();
+        } else {
+            echo "<script>alert('Invalid username or password');</script>";
+        }
     } else {
         echo "<script>alert('Invalid username or password');</script>";
     }

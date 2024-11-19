@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
-    background-color: #e3eaf2;
+    background-color: #ffffff;
     color: #2a3a83;
 }
 
@@ -11,6 +11,11 @@ h2 {
     font-size: 28px;
     color: #2a3a83;
     margin-top: 20px;
+}
+
+.login-container {
+    margin-top: 100px; /* Space for navbar */
+    padding: 20px;
 }
 
 form {

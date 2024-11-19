@@ -24,17 +24,17 @@ if (isset($_POST['removePlayer'])) {
 
 $loggedInUserId = $_SESSION['userId'];
 
-$sql = "SELECT teamId FROM authorizeduser WHERE userId = ?";
+$sql = "SELECT authorizedUsername FROM authorizeduser WHERE userId = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $loggedInUserId);
 $stmt->execute();
-$stmt->bind_result($teamId);
+$stmt->bind_result($authusername);
 $stmt->fetch();
 $stmt->close();
 
-$sql_team = "SELECT teamName, teamLogo, paymentStatus FROM team WHERE teamId = ?";
+$sql_team = "SELECT teamId, teamName, teamLogo, paymentStatus FROM team WHERE managerName = ?";
 $stmt_team = $conn->prepare($sql_team);
-$stmt_team->bind_param("s", $teamId);
+$stmt_team->bind_param("s", $authusername);
 $stmt_team->execute();
 $result_team = $stmt_team->get_result();
 $team = $result_team->fetch_assoc();

@@ -1,7 +1,7 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
     text-align: center;
     background-color: #ffffff;
     color: #2a3a83;
@@ -24,6 +24,7 @@ form {
     max-width: 600px;
     box-sizing: border-box;
     text-align: left; 
+    margin-top: 0; /* Adjust form margin since container already has margin */
 }
 
 .section-title {
@@ -84,4 +85,10 @@ a {
 
 a:hover {
     color: #43429e;
+}
+
+.registration-container {
+    max-width: 800px;
+    margin: 120px auto 20px; /* Increased top margin from 80px to 120px */
+    padding: 20px;
 }
